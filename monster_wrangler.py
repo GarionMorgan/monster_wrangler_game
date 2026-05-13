@@ -77,7 +77,17 @@ class Monster(pygame.sprite.Sprite):
         """update monster"""
         pass
 
-    
+#create a player group and object
+my_player_group = pygame.sprite.Group()
+my_player = Player()
+my_player_group.add(my_player)
+
+#create monster group
+my_monster_group = pygame.sprite.Group()
+
+#crate game object
+my_game = Game()
+
 
 #main game loop
 running = True
@@ -86,6 +96,20 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    #fill display
+    display_surface.fill((0,0,0))
+
+    #update and draw sprite groups
+    my_player_group.update()
+    my_player_group.draw(display_surface)
+
+    my_monster_group.update()
+    my_monster_group.draw(display_surface)
+
+    #update and draw game
+    my_game.update()
+    my_game.draw()
 
     #update display and clock
     pygame.display.update()
