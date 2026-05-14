@@ -53,19 +53,45 @@ class Player(pygame.sprite.Sprite):
     """player class that user can control"""
     def __init__(self):
         """initialize player"""
-        pass
+        super().__init__()
+        self.image = pygame.image.load("./monster_wrangler_assets/knight.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WINDOW_WIDTH//2
+        self.rect.bottom = WINDOW_HEIGHT
+
+        self.lives = 5
+        self.warps = 2
+        self.velocity = 8
+
+        self.catch_sound = pygame.mixer.Sound("./monster_wrangler_assets/catch.wav")
+        self.die_sound = pygame.mixer.Sound("./monster_wrangler_assets/die.wav")
+        self.warp_sound = pygame.mixer.Sound("./monster_wrangler_assets/warp.wav")
 
     def update(self):
         """update player"""
-        pass
+        keys = pygame.key.get_pressed()
+
+        #move player within the bounds of the screen
+        if keys[pygame.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= self.velocity
+        if keys[pygame.K_RIGHT] and self.rect.right < WINDOW_WIDTH:
+            self.rect.x += self.velocity
+        if keys[pygame.K_UP] and self.rect.top > 0:
+            self.rect.y -= self.velocity
+        if keys[pygame.K_DOWN] and self.rect.bottom < WINDOW_HEIGHT:
+            self.rect.y += self.velocity
 
     def warp(self):
         """warp player to safe zone"""
-        pass
+        if self.warps > 0:
+            self.warps -= 1
+            self.warp_sound.play()
+            self.rect.bottom = WINDOW_HEIGHT
 
     def reset(self):
         """resets player position"""
-        pass
+        self.rect.centerx = WINDOW_WIDTH//2
+        self.rect.bottom = WINDOW_HEIGHT
 
 class Monster(pygame.sprite.Sprite):
     """class to create enemy objects"""
