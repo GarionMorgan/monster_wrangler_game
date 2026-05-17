@@ -95,9 +95,20 @@ class Player(pygame.sprite.Sprite):
 
 class Monster(pygame.sprite.Sprite):
     """class to create enemy objects"""
-    def __init__(self):
+    def __init__(self, x, y, image, monster_type):
         """initialize monster"""
-        pass
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x,y)
+
+        #monster type is an int 0 -> blue, 1-> green, 2 -> purple, 3 -> yellow
+        self.type = monster_type
+
+        #set random motion
+        self.dx = random.choice([-1,1])
+        self.dy = random.choice([-1,1])
+        self.velocity = random.randint(1,5)
 
     def update(self):
         """update monster"""
