@@ -112,7 +112,14 @@ class Monster(pygame.sprite.Sprite):
 
     def update(self):
         """update monster"""
-        pass
+        self.rect.x += self.dx*self.velocity
+        self.rect.y += self.dy*self.velocity
+
+        #bounce monster within the boundary of screen
+        if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
+            self.dx = -1*self.dx
+        if self.rect.top <= 0 or self.rect.bottom >= WINDOW_HEIGHT:
+            self.dy = -1*self.dy
 
 #create a player group and object
 my_player_group = pygame.sprite.Group()
