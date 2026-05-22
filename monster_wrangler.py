@@ -17,9 +17,38 @@ clock = pygame.time.Clock()
 #Define Classes
 class Game():
     """A class to control game play"""
-    def __init__(self):
+    def __init__(self, player, monster_group):
         """Initialize game object"""
-        pass
+        #set game values
+        self.score = 0
+        self.round_number = 0
+
+        self.round_time = 0
+        self.frame_count = 0
+
+        self.player = player
+        self.monster_group = monster_group
+
+        #set sounds and music
+        self.next_level_sound = pygame.mixer.Sound("./monster_wrangler_assets/next_level.wav")
+
+        #set font
+        self.font = pygame.font.Font("./monster_wrangler_assets/Abrushow.ttf", 24)
+
+        #set images
+        blue_image = pyagme.image.load("./monster_wrangler_assets/blue_monster.png")
+        green_image = pygame.image.load("./monster_wrangler_assets/green_monster.png")
+        purple_image = pygame.image.load("./monster_wrangler_assets/purple_monster.png")
+        yellow_image = pygame.image.load("./monster_wrangler_assets/yellow_monster.png")
+        #list cooresponds with monster type
+        self.target_monster_images = [blue_image,green_image,purple_image,yellow_image]
+
+        self.target_monster_type = random.randint(0,3)
+        self.target_monster_image = self.target_monster_images[self.target_monster_type]
+
+        self.target_monster_rect = self.target_monster_image.get_rect()
+        self.target_monster_rect.centerx = WINDOW_WIDTH//2
+        self.target_monster_rect.top = 30
 
     def update(self):
         """update game object"""
@@ -136,7 +165,7 @@ monster = Monster(100,500,pygame.image.load("./monster_wrangler_assets/blue_mons
 my_monster_group.add(monster)
 
 #crate game object
-my_game = Game()
+my_game = Game(my_player, my_monster_group)
 
 
 #main game loop
