@@ -52,11 +52,40 @@ class Game():
 
     def update(self):
         """update game object"""
-        pass
+        self.round_time += 1
+
+        #check for collisions
+        self.check_collisions()
 
     def draw(self):
         """draw objects to display"""
-        pass
+        #set colors
+        WHITE = (255,255,255)
+        BLUE = (20,176,235)
+        GREEN = (87,201,47)
+        PURPLE = (226,73,243)
+        YELLOW = (243,157,20)
+
+        #adding monster colors to a list where index matches target_monster_images
+        colors = [BLUE, GREEN, PURPLE, YELLOW]
+
+        #set text
+        catch_text = self.font.render("Current Catch", True, WHITE)
+        catch_rect = catch_text.get_rect()
+        catch_rect.centerx = WINDOW_WIDTH//2
+        catch_rect.top = 5
+
+        score_text = self.font.render("Score: " + str(self.score), True, WHITE)
+        score_rect = score_text.get_rect()
+        score_rect.topleft = (5,5)
+
+        lives_text = self.font.render("Lives: " + str(self.player.lives), True, WHITE)
+        lives_rect = lives_text.get_rect()
+        lives_rect.topleft = (5,35)
+
+        round_text = self.font.render("Current Round: " + str(self.round_number), True, WHITE)
+        round_rect = round_text.get_rect()
+        round_rect.topleft = (5,65)
 
     def check_collisions(self):
         """check for collisions between player and monsters"""
