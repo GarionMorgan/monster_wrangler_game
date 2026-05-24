@@ -36,7 +36,7 @@ class Game():
         self.font = pygame.font.Font("./monster_wrangler_assets/Abrushow.ttf", 24)
 
         #set images
-        blue_image = pyagme.image.load("./monster_wrangler_assets/blue_monster.png")
+        blue_image = pygame.image.load("./monster_wrangler_assets/blue_monster.png")
         green_image = pygame.image.load("./monster_wrangler_assets/green_monster.png")
         purple_image = pygame.image.load("./monster_wrangler_assets/purple_monster.png")
         yellow_image = pygame.image.load("./monster_wrangler_assets/yellow_monster.png")
@@ -86,6 +86,26 @@ class Game():
         round_text = self.font.render("Current Round: " + str(self.round_number), True, WHITE)
         round_rect = round_text.get_rect()
         round_rect.topleft = (5,65)
+
+        time_text = self.font.render("Round Time: " + str(self.round_time), True, WHITE)
+        time_rect = time_text.get_rect()
+        time_rect.topright = (WINDOW_WIDTH-10, 5)
+
+        warp_text = self.font.render("Warps: " + str(self.player.warps), True, WHITE)
+        warp_rect = warp_text.get_rect()
+        warp_rect.topright = (WINDOW_WIDTH-10,35)
+
+        #blit the HUD
+        display_surface.blit(catch_text, catch_rect)
+        display_surface.blit(score_text, score_rect)
+        display_surface.blit(round_text, round_rect)
+        display_surface.blit(lives_text, lives_rect)
+        display_surface.blit(time_text, time_rect)
+        display_surface.blit(warp_text, warp_rect)
+        display_surface.blit(self.target_monster_image, self.target_monster_rect)
+
+        pygame.draw.rect(display_surface, colors[self.target_monster_type], (WINDOW_WIDTH//2 - 32, 30, 64, 64), 2)
+        pygame.draw.rect(display_surface, colors[self.target_monster_type], (0, 100, WINDOW_WIDTH, WINDOW_HEIGHT - 200), 4)
 
     def check_collisions(self):
         """check for collisions between player and monsters"""
