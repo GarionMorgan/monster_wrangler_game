@@ -52,7 +52,11 @@ class Game():
 
     def update(self):
         """update game object"""
-        self.round_time += 1
+        self.frame_count += 1
+        if self.frame_count == FPS:
+            self.round_time += 1
+            self.frame_count = 0
+        
 
         #check for collisions
         self.check_collisions()
