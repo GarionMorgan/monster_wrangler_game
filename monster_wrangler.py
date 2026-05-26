@@ -132,21 +132,44 @@ class Game():
                     #round is complete
                     self.player.reset()
                     self.start_new_round()
-        #caught wrong monster
-        else:
-            self.player.die_sound.play()
-            self.player.lives -= 1
-            #check for game over
-            if self.player.lives == 0:
-                self.pause_game()
-                self.reset_game()
-            
-            self.player.reset()
+            #caught wrong monster
+            else:
+                self.player.die_sound.play()
+                self.player.lives -= 1
+                #check for game over
+                if self.player.lives == 0:
+                    self.pause_game()
+                    self.reset_game()
+                
+                self.player.reset()
 
 
     def start_new_round(self):
         """populate board with new monsters"""
-        pass
+        #provide a score bonus based on how quick the round was finished
+        self.score += int(10000 * self.round_number/(1 + self.round_time))
+
+        #reset round values
+        self.round_time = 0
+        self.frame_count = 0
+        self.round_number += 1
+        self.player.warps += 1
+
+        #remove any remaining monsters from reset
+        for monster in self.monster_group:
+            self.monster_group.remove(monster)
+
+        #add monsters to monster group
+        for i in range(self.round_number):
+            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[0], 0))
+            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[1], 1))
+            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[2], 2))
+            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[3], 3))
+
+        #choose new target monster
+        self.choose_new_target()
+
+        self.next_level_sound.play()
 
     def choose_new_target(self):
         """choose new target for player"""
@@ -248,6 +271,7 @@ my_monster_group.add(monster)
 
 #crate game object
 my_game = Game(my_player, my_monster_group)
+my_game.start_new_round()
 
 
 #main game loop
