@@ -113,7 +113,36 @@ class Game():
 
     def check_collisions(self):
         """check for collisions between player and monsters"""
-        pass
+        #check for collision between player and an individual monster
+        #must test type of monster to see if it matches type of target monster
+        collided_monster = pygame.sprite.spritecollideany(self.player, self.monster_group)
+
+        #collided with a monster
+        if collided_monster:
+            #caught correct monster
+            if collided_monster.type == self.target_monster_type:
+                self.score += 100 * self.round_number
+                #remove caught monster
+                collided_monster.remove(self.monster_group)
+                if (self.monster_group):
+                    #there are more monsters to catch
+                    self.player.catch_sound.play()
+                    self.choose_new_target()
+                else:
+                    #round is complete
+                    self.player.reset()
+                    self.start_new_round()
+        #caught wrong monster
+        else:
+            self.player.die_sound.play()
+            self.player.lives -= 1
+            #check for game over
+            if self.player.lives == 0:
+                self.pause_game()
+                self.reset_game()
+            
+            self.player.reset()
+
 
     def start_new_round(self):
         """populate board with new monsters"""
