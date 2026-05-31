@@ -173,7 +173,9 @@ class Game():
 
     def choose_new_target(self):
         """choose new target for player"""
-        pass
+        target_monster = random.choice(self.monster_group.sprites())
+        self.target_monster_type = target_monster.type
+        self.target_monster_image = target_monster.image
 
     def pause_game(self):
         """pause game"""
