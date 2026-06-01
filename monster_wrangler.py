@@ -138,7 +138,7 @@ class Game():
                 self.player.lives -= 1
                 #check for game over
                 if self.player.lives == 0:
-                    self.pause_game()
+                    self.pause_game("Final Score: " + str(self.score), "Press 'Enter' to play again")
                     self.reset_game()
                 
                 self.player.reset()
@@ -177,9 +177,38 @@ class Game():
         self.target_monster_type = target_monster.type
         self.target_monster_image = target_monster.image
 
-    def pause_game(self):
+    def pause_game(self, main_text, sub_text):
         """pause game"""
-        pass
+        #set color
+        WHITE = (255,255,255)
+        BLACK = (0,0,0)
+
+        #create main pause text
+        main_text = self.font.render(main_text, True, WHITE)
+        main_rect = main_text.get_rect()
+        main_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
+
+        #create a sub pause text
+        sub_text = self.font.render(sub_text, True, WHITE)
+        sub_rect = sub_text.get_rect()
+        sub_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 64)
+
+        #display pause text
+        display_surface.fill(BLACK)
+        display_surface.blit(main_text, main_rect)
+        display_surface.blit(sub_text, sub_rect)
+        pygame.display.update()
+
+        #pause game
+        is_paused = True
+        while is_paused:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        is_paused = False
+                if event.type == pygame.QUIT:
+                    is_paused = False
+                    running = False
 
     def reset_game(self):
         """reset game"""
