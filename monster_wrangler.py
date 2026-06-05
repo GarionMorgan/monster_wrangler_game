@@ -159,12 +159,18 @@ class Game():
         for monster in self.monster_group:
             self.monster_group.remove(monster)
 
+        #spawn monsters fully inside the arena (x: 0..WINDOW_WIDTH, y: 100..WINDOW_HEIGHT-100)
+        monster_width = self.target_monster_images[0].get_width()
+        monster_height = self.target_monster_images[0].get_height()
+        max_spawn_x = WINDOW_WIDTH - monster_width
+        max_spawn_y = WINDOW_HEIGHT - 100 - monster_height
+
         #add monsters to monster group
         for i in range(self.round_number):
-            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[0], 0))
-            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[1], 1))
-            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[2], 2))
-            self.monster_group.add(Monster(random.randint(0, WINDOW_WIDTH - 64), random.randint(100, WINDOW_HEIGHT - 64), self.target_monster_images[3], 3))
+            self.monster_group.add(Monster(random.randint(0, max_spawn_x), random.randint(100, max_spawn_y), self.target_monster_images[0], 0))
+            self.monster_group.add(Monster(random.randint(0, max_spawn_x), random.randint(100, max_spawn_y), self.target_monster_images[1], 1))
+            self.monster_group.add(Monster(random.randint(0, max_spawn_x), random.randint(100, max_spawn_y), self.target_monster_images[2], 2))
+            self.monster_group.add(Monster(random.randint(0, max_spawn_x), random.randint(100, max_spawn_y), self.target_monster_images[3], 3))
 
         #choose new target monster
         self.choose_new_target()
@@ -179,6 +185,8 @@ class Game():
 
     def pause_game(self, main_text, sub_text):
         """pause game"""
+        global running
+
         #set color
         WHITE = (255,255,255)
         BLACK = (0,0,0)
@@ -290,8 +298,12 @@ class Monster(pygame.sprite.Sprite):
 
         #bounce monster within the boundary of screen
         if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
+            self.rect.left = max(0, self.rect.left)
+            self.rect.right = min(WINDOW_WIDTH, self.rect.right)
             self.dx = -1*self.dx
         if self.rect.top <= 100 or self.rect.bottom >= WINDOW_HEIGHT - 100:
+            self.rect.top = max(100, self.rect.top)
+            self.rect.bottom = min(WINDOW_HEIGHT - 100, self.rect.bottom)
             self.dy = -1*self.dy
 
 #create a player group and object
